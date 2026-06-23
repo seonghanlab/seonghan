@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seonghan Jang, Ph.D. — Insect–Microbe Symbiosis</title>
+<style>
+  :root {
+    --bg: #1a1c20;
+    --bg-soft: #24262c;
+    --text: #eef1f4;
+    --muted: #b7bcc6;
+    --gold: #e0b66f;
+    --gold-bright: #f0cf8f;
+    --gold-soft: rgba(224,182,111,0.14);
+    --border: #393c44;
+    --maxw: 100%;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text); background: var(--bg); line-height: 1.7; font-size: 18.5px;
+  }
+  a { color: var(--gold); text-decoration: none; transition: color .15s; }
+  a:hover { color: var(--gold-bright); text-decoration: underline; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(20,30,52,0.93); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(224,182,111,0.40);
+  }
+  nav {
+    max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center;
+    justify-content: space-between; padding: 14px 5%; flex-wrap: wrap; gap: 8px;
+  }
+  nav .brand { font-weight: 700; font-size: 18px; color: var(--gold); letter-spacing: .3px; cursor: pointer; }
+  nav ul { list-style: none; display: flex; gap: 22px; }
+  nav ul a {
+    color: var(--muted); font-size: 16.5px; font-weight: 500;
+    padding-bottom: 2px; border-bottom: 2px solid transparent;
+  }
+  nav ul a:hover, nav ul a.active { color: var(--gold); border-bottom-color: var(--gold); text-decoration: none; }
+
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 5%; }
+  section { padding: 56px 0 40px; scroll-margin-top: 70px; display: none; }
+  section.active-section { display: block; }
+  h1 { font-size: 36px; line-height: 1.2; margin-bottom: 10px; color: #fff; }
+  h2 { font-size: 28px; letter-spacing: .5px; color: var(--gold); margin-bottom: 22px; font-weight: 700; }
+  h3 { font-size: 21px; margin-bottom: 6px; color: var(--gold-bright); }
+  /* Section sub-headings (Education, Appointments, Grants, Awards…) */
+  #about h3, #publications h3 {
+    color: #ffd98a; font-size: 22px;
+    display: inline-block; padding-bottom: 4px;
+    border-bottom: 2px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  p { margin-bottom: 14px; }
+  .muted { color: var(--muted); }
+
+  /* Home background image with dark overlay for readability */
+  #home {
+    position: relative;
+  }
+  #home::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("background.png") center center / cover no-repeat;
+    opacity: 0.32;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .hero { display: flex; gap: 34px; align-items: center; flex-wrap: wrap; position: relative; z-index: 1; }
+  .hero .photo {
+    width: 168px; height: 168px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--gold); flex-shrink: 0; background: var(--bg-soft);
+  }
+  .hero .photo-fallback {
+    width: 168px; height: 168px; border-radius: 50%; background: var(--bg-soft);
+    display: flex; align-items: center; justify-content: center; color: var(--muted);
+    font-size: 13px; text-align: center; border: 2px solid var(--gold); flex-shrink: 0;
+  }
+  .hero .intro { flex: 1; min-width: 260px; }
+  #home h1 { font-size: 48px; }
+  .hero .role { color: var(--gold); font-size: 23px; margin-bottom: 4px; font-weight: 500; }
+  .hero .affil { color: var(--muted); font-size: 19px; margin-bottom: 16px; }
+  #home .intro > p { font-size: 20px; }
+
+  .social { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
+  .social a {
+    display: inline-flex; align-items: center; gap: 7px; background: var(--gold-soft);
+    border: 1px solid var(--border); color: var(--text); font-size: 16px; font-weight: 500;
+    padding: 9px 16px; border-radius: 8px;
+  }
+  .social a:hover { border-color: var(--gold); color: var(--gold-bright); text-decoration: none; }
+  .social svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .gold-fill { fill: var(--gold); }
+
+  .stats { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
+  .stat { }
+  .stat .num { font-size: 30px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .research-item { margin-bottom: 26px; }
+  .tags { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag { background: var(--gold-soft); color: var(--gold-bright); font-size: 13px; padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border); }
+
+  .entry { margin-bottom: 16px; }
+  .entry .deg { font-weight: 600; color: #fff; }
+  .entry .meta { color: var(--muted); font-size: 15px; }
+  .entry .inst { color: #6ee29a; font-weight: 700; }
+
+  .pub-search {
+    width: 100%; padding: 11px 14px; margin-bottom: 18px; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px;
+  }
+  .pub-search::placeholder { color: var(--muted); }
+  .pub-search:focus { outline: none; border-color: var(--gold); }
+  #pubList { counter-reset: pubnum 34; }
+  .pub { padding: 13px 0; border-bottom: 1px dashed var(--border); }
+  #pubList .pub { counter-increment: pubnum -1; }
+  .pub:last-child { border-bottom: none; }
+  .pub .title { font-weight: 600; color: #fff; }
+  .pub .title a { color: #fff; text-decoration: none; transition: color .15s; }
+  .pub .title a:hover { color: var(--gold-bright); text-decoration: underline; }
+  #pubList .pub .title::before {
+    content: counter(pubnum) ". ";
+    color: var(--gold); font-weight: 700;
+  }
+  .pub .authors { color: var(--muted); font-size: 15px; }
+  .pub .authors strong {
+    color: #6ee29a; font-weight: 800;
+    text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px;
+  }
+  .pub .venue { font-style: italic; color: var(--muted); font-size: 15px; }
+  .pub .star { color: var(--gold); font-size: 14px; }
+  a.star, .pub .title a.star { color: #e060b8; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  a.star:hover, .pub .title a.star:hover { color: #f47ccf; text-decoration: underline; }
+  a.news-badge, .pub .title a.news-badge { color: #4fc8d6; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  a.news-badge:hover, .pub .title a.news-badge:hover { color: #7adee9; text-decoration: underline; }
+  a.hanbitsa, .pub .title a.hanbitsa { color: #b79cff; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  a.hanbitsa:hover, .pub .title a.hanbitsa:hover { color: #cdbcff; text-decoration: underline; }
+  a.kribb-badge, .pub .title a.kribb-badge { color: #f0913e; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  a.kribb-badge:hover, .pub .title a.kribb-badge:hover { color: #ffb066; text-decoration: underline; }
+  .pub .year-badge {
+    display: inline-block; background: var(--gold-soft); color: var(--gold-bright);
+    font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 10px; margin-left: 6px;
+  }
+  .no-results { color: var(--muted); padding: 14px 0; display: none; }
+
+  .news-item { display: flex; gap: 18px; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+  .news-item:last-child { border-bottom: none; }
+  .news-item .date { color: var(--gold); font-size: 14px; white-space: nowrap; min-width: 80px; font-weight: 500; }
+  .role-tag {
+    display: inline-block; background: var(--gold-soft); color: var(--gold-bright);
+    font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 10px;
+    margin-right: 7px; border: 1px solid var(--border); white-space: nowrap;
+  }
+  .talk-tag { color: #6ee29a; border-color: rgba(110,226,154,0.35); background: rgba(110,226,154,0.10); }
+  .award-tag { color: #e7a3c8; border-color: rgba(231,163,200,0.40); background: rgba(231,163,200,0.12); }
+
+  .award-item { padding: 9px 0; border-bottom: 1px dashed var(--border); font-size: 15.5px; }
+  .award-item:last-child { border-bottom: none; }
+  .award-item .yr { color: var(--gold); font-weight: 600; margin-right: 8px; }
+
+  footer { max-width: var(--maxw); margin: 0 auto; padding: 30px 5% 50px; color: var(--muted); font-size: 14px; }
+
+  /* clickable news (with photo) */
+  .news-item.has-photo { cursor: pointer; }
+  .photo-badge {
+    display: inline-block; font-size: 15px; margin-left: 7px; white-space: nowrap;
+  }
+  .news-item.has-photo:hover span { color: var(--gold-bright); }
+
+  /* lightbox modal */
+  #lightbox {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox .box {
+    background: var(--bg-soft); border: 1px solid var(--gold);
+    border-radius: 12px; max-width: 760px; width: 100%;
+    max-height: 90vh; overflow-y: auto; padding: 0;
+  }
+  #lightbox img { width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px 12px 0 0; background:#000; display:block; }
+  #lightbox .caption { padding: 18px 22px 24px; }
+  #lightbox .caption .lb-date { color: var(--gold); font-size: 14px; font-weight: 600; }
+  #lightbox .caption .lb-title { color: #fff; font-size: 19px; font-weight: 600; margin: 4px 0 8px; }
+  #lightbox .caption .lb-body { color: var(--muted); font-size: 16px; }
+  #lightbox .close {
+    position: absolute; top: 18px; right: 24px; color: #fff; font-size: 30px;
+    cursor: pointer; line-height: 1; background: none; border: none;
+  }
+  #lightbox .close:hover { color: var(--gold-bright); }
+
+  @media (max-width: 600px) {
+    nav { justify-content: center; }
+    h1 { font-size: 29px; }
+    .news-item { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <span class="brand">Seonghan Jang</span>
+    <ul>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#news">News</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ HOME ============ -->
+  <section id="home" class="active-section">
+    <div class="hero">
+      <img src="profile.jpg" alt="Seonghan Jang" class="photo"
+           onerror="this.outerHTML='&lt;div class=&quot;photo-fallback&quot;&gt;Add profile.jpg&lt;br&gt;to this folder&lt;/div&gt;'">
+      <div class="intro">
+        <h1>Seonghan Jang, Ph.D.</h1>
+        <p class="affil">Infectious Disease Research Center,<br>Korea Research Institute of Bioscience and Biotechnology (KRIBB), Daejeon, Korea</p>
+        <p style="text-align: justify;">My research centers on how the gut microbiome shapes host health and disease. After years of working on insect–microbe and plant–microbe symbiosis, I now use mammalian models to dissect how gut microbial communities drive infection, inflammation, and disease.</p>
+        <div class="social">
+          <a href="mailto:seonghan@kribb.re.kr" aria-label="Email">
+            <svg viewBox="0 0 24 24" class="gold-fill"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7L3 5.5V18h18V5.5L12 11zM4.3 5l7.7 4.7L19.7 5H4.3z"/></svg>
+            Email
+          </a>
+          <a href="https://scholar.google.com/citations?user=4PURJCkAAAAJ&hl=ko&oi=ao" target="_blank" rel="noopener" aria-label="Google Scholar">
+            <svg viewBox="0 0 24 24" class="gold-fill"><path d="M12 2L1 8l11 6 9-4.91V17h2V8L12 2zM5 13.18v3.5L12 20l7-3.32v-3.5L12 17l-7-3.82z"/></svg>
+            Google Scholar
+          </a>
+          <a href="https://orcid.org/0000-0002-0486-3351" target="_blank" rel="noopener" aria-label="ORCID">
+            <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="128" cy="128" r="128" fill="#A6CE39"/>
+              <g fill="#fff">
+                <path d="M86.3 186.2H70.9V79.1h15.4v107.1z"/>
+                <path d="M108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7 0-21.5-13.7-39.7-43.7-39.7h-23.7v79.4z"/>
+                <path d="M88.7 56.8c0 5.5-4.5 10.1-10.1 10.1s-10.1-4.6-10.1-10.1c0-5.6 4.5-10.1 10.1-10.1s10.1 4.6 10.1 10.1z"/>
+              </g>
+            </svg>
+            ORCID
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <h2>About</h2>
+    <p>I am a Postdoctoral Researcher at the Infectious Disease Research Center, Korea Research Institute of Bioscience and Biotechnology (KRIBB). My research centers on host–microbe interactions, with a focus on how the gut microbiome shapes host immunity, physiology, and disease.</p>
+    <p>I earned my Ph.D. at Hokkaido University, Japan, as a Japan Society for the Promotion of Science (JSPS) Doctoral Research Fellow, studying insect gut symbiosis, and later continued this work as a JSPS Postdoctoral Fellow at the National Institute of Advanced Industrial Science and Technology (AIST), Hokkaido Center.</p>
+    <p>My work spans mammalian, insect, and plant-associated microbiome systems, aiming to uncover microbial mechanisms that regulate host health, disease susceptibility, and biological function.</p>
+
+    <h3 style="margin-top:26px;">Education</h3>
+    <div class="entry"><span class="deg">Ph.D.</span>, Graduate School of Agriculture, <span class="inst">Hokkaido University</span>, Sapporo, Japan <span class="meta">(2018–2021)</span></div>
+    <div class="entry"><span class="deg">M.S.</span>, Manufacturing Pharmacy, <span class="inst">Pusan National University</span>, Busan, Korea <span class="meta">(2016–2018)</span></div>
+    <div class="entry"><span class="deg">B.S.</span>, Molecular and Life Science, <span class="inst">Hanyang University ERICA</span>, Ansan, Korea <span class="meta">(2010–2016)</span></div>
+
+    <h3 style="margin-top:24px;">Appointments</h3>
+    <div class="entry"><span class="deg">2024–present</span> &nbsp;Sejong Science Fellow, Infectious Disease Research Center, <span class="inst">Korea Research Institute of Bioscience and Biotechnology (KRIBB)</span>, Daejeon, Korea</div>
+    <div class="entry"><span class="deg">2023–2024</span> &nbsp;Postdoctoral Researcher, Infectious Disease Research Center, <span class="inst">Korea Research Institute of Bioscience and Biotechnology (KRIBB)</span>, Daejeon, Korea</div>
+    <div class="entry"><span class="deg">2021–2023</span> &nbsp;Postdoctoral Researcher, Division of Life Sciences, <span class="inst">Korea Polar Research Institute (KOPRI)</span>, Incheon, Korea</div>
+    <div class="entry"><span class="deg">2021</span> &nbsp;JSPS Postdoctoral Research Fellow, Microbial Ecology &amp; Engineering Research Group, <span class="inst">National Institute of Advanced Industrial Science and Technology (AIST)</span>, Sapporo, Japan</div>
+    <div class="entry"><span class="deg">2019–2021</span> &nbsp;JSPS Doctoral Research Fellow, <span class="inst">Hokkaido University</span>, Sapporo, Japan</div>
+
+    <h3 style="margin-top:24px;">Grants</h3>
+    <div class="entry"><span class="deg">Sejong Science Fellowship</span> &nbsp;<span class="meta">(Principal Investigator)</span><br>
+      <span class="muted">Holo-omics approach to deciphering insect–symbiont–plant interactions. ₩105,210,000/year for 3+2 years.</span></div>
+    <div class="entry"><span class="deg">JSPS Research Fellowship (PD)</span> &nbsp;<span class="meta">(Principal Investigator)</span><br>
+      <span class="muted">Homeobox-gene-driven dramatic morphological change of the insect gut induced by gut bacteria. ¥5,544,400/year for 2 years.</span></div>
+    <div class="entry"><span class="deg">JSPS Research Fellowship (DC2)</span> &nbsp;<span class="meta">(Principal Investigator)</span><br>
+      <span class="muted">Molecular basis underlying the endosymbiosis between insects and bacteria. ¥3,300,000/year for 2 years.</span></div>
+    <div class="entry"><span class="deg">Joint Usage / Collaborative Research Grant</span> &nbsp;<span class="meta">(Principal Investigator)</span><br>
+      <span class="muted">Diversity and evolution of the gut symbiotic system in stinkbugs. Tropical Biosphere Research Center, University of the Ryukyus.</span></div>
+
+    <h3 style="margin-top:24px;">Awards</h3>
+    <div class="award-item"><span class="yr">2025</span>Outstanding Postdoctoral Researcher Award, Korea Research Institute of Bioscience and Biotechnology (KRIBB)</div>
+    <div class="award-item"><span class="yr">2025</span>Travel Award, International Society for Molecular Plant-Microbe Interactions</div>
+    <div class="award-item"><span class="yr">2023</span>Oral Presentation Award, The Korean Society of Applied Entomology</div>
+    <div class="award-item"><span class="yr">2023</span>Poster Presentation Award, The Korean Society of Plant Pathology</div>
+    <div class="award-item"><span class="yr">2021</span>Best Poster Presentation Award, 23rd Japanese Society of Evolutionary Studies</div>
+    <div class="award-item"><span class="yr">2021</span>Poster Presentation Award, 65th Japanese Society of Applied Entomology &amp; Zoology</div>
+    <div class="award-item"><span class="yr">2019</span>Excellence English Oral Presentation Award, 21st Japanese Society of Evolutionary Studies</div>
+    <div class="award-item"><span class="yr">2018</span>Best Thesis Award, Pusan National University</div>
+    <div class="award-item"><span class="yr">2017</span>Best Oral Presentation Award, The Korean Society of Applied Entomology</div>
+    <div class="award-item"><span class="yr">2016</span>Academic Excellence Award, Hanyang University</div>
+
+    <h3 style="margin-top:24px;">Invited Talks</h3>
+    <div class="award-item"><span class="yr">2024</span><em>Riptortus pedestris</em>: an emerging model system for studying insect–microbe symbiotic associations. Early-Career Scientist Seminar, School of Biological Sciences, Seoul National University, Korea.</div>
+    <div class="award-item"><span class="yr">2024</span><em>Riptortus pedestris</em> — the emerging model system for studying insect–microbe symbiotic associations. School of Biological Sciences, Seoul National University, Korea.</div>
+    <div class="award-item"><span class="yr">2023</span>Bean bug — an emerging model system for studying insect–bacteria symbiosis. Infectious Disease Research Center, KRIBB, Daejeon, Korea.</div>
+    <div class="award-item"><span class="yr">2022</span><em>Riptortus pedestris</em> — an emerging model system for studying insect–microbe symbiotic associations. Korea Polar Research Institute, Incheon, Korea.</div>
+    <div class="award-item"><span class="yr">2021</span><em>Riptortus pedestris</em> — an emerging model system for studying insect–microbe symbiotic associations. Annual Meeting of the Korea Society for Parasitology and Tropical Medicine (online).</div>
+    <div class="award-item"><span class="yr">2020</span>Bean bug: an emerging model system for studying insect–microbe symbiotic associations. School of Medicine, Kyungpook National University, Daegu, Korea.</div>
+    <div class="award-item"><span class="yr">2019</span>Understanding of insect–bacteria symbioses. Institute of Integrative Biology of the Cell, CNRS, Gif-sur-Yvette, France.</div>
+    <div class="award-item"><span class="yr">2018</span>Dual Oxidase (Duox) as a pivotal symbiosis factor in bean bug–<em>Burkholderia</em> symbiosis. Tropical Biosphere Research Center, University of the Ryukyus, Okinawa, Japan.</div>
+
+    <h3 style="margin-top:24px;">Oral Presentations</h3>
+    <div class="award-item"><span class="yr">2023</span>Trojan horse in insect–microbe symbiosis. 2023 Annual Meeting of the Korean Society of Applied Entomology, Pyeongchang, Korea.</div>
+    <div class="award-item"><span class="yr">2022</span>Break the barrier: ingested soil bacteria breach gut epithelia and stimulate humoral and cellular immunity in <em>Riptortus pedestris</em>. 10th Congress of the International Symbiosis Society, Lyon, France.</div>
+    <div class="award-item"><span class="yr">2019</span>Host–symbiont specificity is determined by microbe–microbe competition in an insect gut. 2019 Annual Meeting of the Korean Society of Applied Entomology, Pyeongchang, Korea.</div>
+    <div class="award-item"><span class="yr">2019</span>DUOX determines insect gut symbiosis by stabilizing respiratory network. 21st Annual Meeting of the Japanese Society of Evolutionary Studies, Sapporo, Japan.</div>
+    <div class="award-item"><span class="yr">2019</span>Gut symbionts control the respiratory network in an insect. 63rd Annual Meeting of the Japanese Society of Applied Entomology and Zoology, Tsukuba, Japan.</div>
+    <div class="award-item"><span class="yr">2017</span>PhaR, a negative regulatory protein of PhaP, modulates colonization of <em>Burkholderia</em> gut symbiont. 2017 Annual Meeting of the Korean Society of Applied Entomology, Gyeongju, Korea.</div>
+    <div class="award-item"><span class="yr">2017</span><em>Pseudomonas entomophila</em> kills host insect <em>Riptortus pedestris</em> via secretion of insecticidal protein AprA. 2017 PNU-AIST Global Research Laboratory Annual Meeting, Busan, Korea.</div>
+
+    <h3 style="margin-top:24px;">Poster Presentations</h3>
+    <div class="award-item"><span class="yr">2026</span>The "Black Spot" microbiota: specific gut commensals drive sepsis lethality by orchestrating early cytokine storms. ASM Microbe.</div>
+    <div class="award-item"><span class="yr">2025</span>A Trojan horse cheater in the insect gut. 2025 Annual Meeting of the Microbiological Society of Korea.</div>
+    <div class="award-item"><span class="yr">2025</span>Rhizosphere <em>Burkholderia</em> reduces methane emissions by enriching methanotrophs. 20th International Congress of the ISMPMI.</div>
+    <div class="award-item"><span class="yr">2024</span>Rhizosphere <em>Burkholderia</em> mitigates methane emissions by promoting methanotrophs. 14th Asian Symposium on Microbial Ecology, Cheongju, Korea.</div>
+    <div class="award-item"><span class="yr">2024</span>A hidden player of defensive symbiosis: ingested soil bacteria breach gut epithelia and prime systemic immunity in <em>Riptortus pedestris</em>. 27th International Congress of Entomology, Kyoto, Japan.</div>
+    <div class="award-item"><span class="yr">2024</span>Ingested soil bacteria breach gut epithelia and prime systemic immunity without pathogenic effects. 39th Annual Meeting of the International Society of Chemical Ecology, Prague, Czechia.</div>
+    <div class="award-item"><span class="yr">2023</span>Intestinal <em>Enterococcus</em> population affects <em>Galleria mellonella</em> metamorphosis. 2023 Annual Meeting of the Korean Society of Applied Entomology, Pyeongchang, Korea.</div>
+    <div class="award-item"><span class="yr">2023</span>BREAK THE BARRIER! Ingested soil bacteria breach gut epithelia and stimulate systemic immunity in <em>Riptortus pedestris</em>. 50th Annual Meeting of the Korean Society for Microbiology and Biotechnology, Gyeongju, Korea.</div>
+    <div class="award-item"><span class="yr">2023</span>Symbiont-like cheater genocides a pest insect. Annual Meeting of the Korean Society of Plant Pathology, Gyeongju, Korea.</div>
+    <div class="award-item"><span class="yr">2022</span>The structure and core member of bacteriobiome in polar lichens. 10th Congress of the International Symbiosis Society, Lyon, France.</div>
+    <div class="award-item"><span class="yr">2022</span>Lichen microbiome of the polar region is structured by mycobiont and environmental factors. 12th Asian Symposium on Microbial Ecology, Jeju, Korea.</div>
+    <div class="award-item"><span class="yr">2021</span>Amazing morphological change of symbiotic organ: Homeobox gene is key! 23rd Annual Meeting of the Japanese Society of Evolutionary Studies (online).</div>
+    <div class="award-item"><span class="yr">2021</span>Amazing morphological change of symbiotic organ: Homeobox gene is key! 65th Annual Meeting of the Japanese Society of Applied Entomology &amp; Zoology (online).</div>
+    <div class="award-item"><span class="yr">2020</span>Duox determines insect gut symbiosis by stabilizing respiratory network. 64th Annual Meeting of the Japanese Society of Applied Entomology &amp; Zoology, Nagoya, Japan.</div>
+    <div class="award-item"><span class="yr">2019</span>Gut commensal bacteria contribute to insect healthcare by immune enhancement. 2019 Annual Meeting of the Korean Society of Applied Entomology, Pyeongchang, Korea.</div>
+    <div class="award-item"><span class="yr">2018</span>Dual Oxidase (Duox) is pivotal to maintain the bean bug–<em>Burkholderia</em> gut symbiosis. 46th Naito Conference, Sapporo, Japan.</div>
+    <div class="award-item"><span class="yr">2017</span>PhaR protein regulates colonization of <em>Burkholderia</em> gut symbiont in the midgut of the host insect. 2017 Gordon Conference: Animal–Microbe Symbioses, Vermont, USA.</div>
+    <div class="award-item"><span class="yr">2016</span>PhaR related to regulation of PHA surface protein affects colonization of <em>Burkholderia</em> gut symbiont. 2nd Asian Invertebrate Immunity Symposium, Hangzhou, China.</div>
+  </section>
+
+  <!-- ============ RESEARCH ============ -->
+  <section id="research">
+    <h2>Research</h2>
+    <p>My research focuses on how microbiomes regulate host physiology, immunity, and disease. I am especially interested in identifying microbial communities and microbial factors that shift host immune responses toward protection or pathology, with the goal of developing microbiome-based strategies for disease prevention and immune modulation.</p>
+
+    <div class="research-item">
+      <h3>Gut microbiome, immunity, and disease</h3>
+      <p>My current work investigates how the gut microbiome shapes host physiology and inflammatory disease susceptibility. Using mammalian models, I study microbiome-driven mechanisms involved in sepsis, colitis, and colorectal cancer, including how specific gut commensals can trigger TLR4-dependent hyperinflammatory responses during bacterial infection. This research aims to define how microbiota-derived signals regulate innate immunity and host physiology, and how these mechanisms can be used for microbiome-guided disease prevention.</p>
+    </div>
+    <div class="research-item">
+      <h3>Insect–microbe gut symbiosis</h3>
+      <p>I study the bean bug <em>Riptortus pedestris</em>–<em>Caballeronia</em> symbiosis as a model for environmentally acquired gut symbiosis. My work examines how insect hosts select, accommodate, and control beneficial bacteria within specialized gut tissues, and how bacterial symbiosis factors enable colonization, persistence, and functional maintenance of the association. This research provides a mechanistic framework for understanding how stable host–microbe partnerships are established and regulated.</p>
+    </div>
+    <div class="research-item">
+      <h3>Plant–microbe interactions</h3>
+      <p>I also study plant–microbe and rhizosphere interactions related to plant immunity, pathogen control, and environmental adaptation.</p>
+    </div>
+
+    <div class="tags">
+      <span class="tag">Host–microbe interaction</span>
+      <span class="tag">Microbiome</span>
+      <span class="tag">Bioinformatics</span>
+      <span class="tag">Microbial ecology</span>
+      <span class="tag">Infectious disease</span>
+      <span class="tag">Innate immunity</span>
+    </div>
+  </section>
+
+  <!-- ============ PUBLICATIONS ============ -->
+  <section id="publications">
+    <h2>Publications</h2>
+    <p class="muted" style="margin-bottom:14px;">* co-first author &nbsp;† corresponding author</p>
+
+    <input type="text" id="pubSearch" class="pub-search" placeholder="Search by title, journal, author, or year…" oninput="filterPubs()">
+
+    <div id="pubList">
+      <div class="pub"><p class="title"><a href="https://www.sciencedirect.com/science/article/pii/S2090123226004194" target="_blank" rel="noopener">Polyethylene and polystyrene oxidation by host and microbial oxidoreductases in <em>Zophobas atratus</em></a> <span class="year-badge">2026</span></p><p class="authors">JS Son*, GD Chang*, <strong>S Jang</strong>, S Lee, Y Sim, JH Song†, J Jeong†, CM Ryu†</p><p class="venue">Journal of Advanced Research</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1038/s41467-026-72435-3" target="_blank" rel="noopener">A Muribaculaceae-enriched microbiota exacerbates TLR4-dependent <em>Acinetobacter baumannii</em>-induced hyperinflammatory sepsis</a> <span class="year-badge">2026</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=101573&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="news-badge" href="https://www.etnews.com/20260522000360" target="_blank" rel="noopener">★ 뉴스</a> <a class="kribb-badge" href="https://www.kribb.re.kr/kor/sub05/sub05_01_01_view.jsp?b_idx=35208&keyWord=%BC%AD%C8%D6%BF%F8&keyField=b_title&page=1&nowBlock=0&category=" target="_blank" rel="noopener">★ KRIBB 성과</a></p><p class="authors"><strong>S Jang*</strong>, YJ Kim*, J Park, D Kim, TH Kim, S Lee, DJ Kim†, CM Ryu†, HW Seo†</p><p class="venue">Nature Communications</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1073/pnas.2533244123" target="_blank" rel="noopener">A Trojan horse pathogen breaking through partner choice barriers in the insect gut</a> <span class="year-badge">2026</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=101531&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2026/pr20260514/pr20260514.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors">K Ishigami*†, <strong>S Jang*</strong>, A Yoshioka*, H Morimura, A Yokota, L Moulin, AO Lirette, K Takeshita, D Nakane, P Mergaert, Y Kikuchi†</p><p class="venue">PNAS, 123(18), e2533244123</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.xplc.2026.101871" target="_blank" rel="noopener">Digital twins for plant–microbe interactions: gap finding and filling</a> <span class="year-badge">2026</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=101572&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a></p><p class="authors"><strong>S Jang*</strong>, SK Kim*, JS Son, CM Ryu</p><p class="venue">Plant Communications, 101871</p></div>
+      <div class="pub"><p class="title"><a href="https://link.springer.com/article/10.1186/s40168-026-02402-z" target="_blank" rel="noopener">Soil pH as an external filter shaping insect-microbe gut symbiosis</a> <span class="year-badge">2026</span> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2026/pr20260507/pr20260507.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors">H Itoh†, H Shimoji, D Nakane, <strong>S Jang</strong>, Y Kikuchi†</p><p class="venue">Microbiome, 14, 129</p></div>
+      <div class="pub"><p class="title"><a href="https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(26)00024-1/fulltext" target="_blank" rel="noopener">Innate immune priming by n-dodecyl-β-D-maltoside in murine models of bacterial and viral infection</a> <span class="year-badge">2026</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/han-interview.do?mode=view&id=100309&authorId=51353#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="news-badge" href="https://www.newsis.com/view/NISX20260211_0003511977" target="_blank" rel="noopener">★ 뉴스</a> <a class="kribb-badge" href="https://www.kribb.re.kr/kor/sub05/sub05_01_01_view.jsp?b_idx=34960&keyWord=%BC%AD%C8%D6%BF%F8&keyField=b_title&page=1&nowBlock=0&category=" target="_blank" rel="noopener">★ KRIBB 성과</a></p><p class="authors">J Park, J Yang, <strong>S Jang</strong>, TW Kim, S Heo, J Seo, S Byun, CM Ryu†, HW Seo†</p><p class="venue">EBioMedicine, 124</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.stress.2025.101174" target="_blank" rel="noopener">Dual functionality of <em>Peribacillus frigoritolerans</em> in methane mitigation and rice immunity</a> <span class="year-badge">2025</span></p><p class="authors">H Yang, <strong>S Jang</strong>, SY Lee, SH Park, SG Lee, D Kim, CM Ryu†</p><p class="venue">Plant Stress, 101174</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.3389/fmicb.2025.1638634" target="_blank" rel="noopener">Beyond reductionism: the emerging holistic paradigm in indirect control of pathogen infection</a> <span class="year-badge">2025</span></p><p class="authors"><strong>S Jang</strong>, D Kim, HW Seo†, CM Ryu†</p><p class="venue">Frontiers in Microbiology, 16, 1638634</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1093/ismeco/ycaf060" target="_blank" rel="noopener">A new role for an old actor: plant small RNAs orchestrate the phytobiome</a> <span class="year-badge">2025</span></p><p class="authors"><strong>S Jang</strong>, CM Ryu†</p><p class="venue">ISME Communications, ycaf060</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.jhazmat.2024.136264" target="_blank" rel="noopener">Enzymatic oxidation of polyethylene by <em>Galleria mellonella</em> intestinal cytochrome P450s</a> <span class="year-badge">2024</span></p><p class="authors">JS Son*, S Lee*, S Hwang, J Jeong, <strong>S Jang</strong>, J Gong, JY Choi, YH Je, CM Ryu†</p><p class="venue">Journal of Hazardous Materials, 480, 136264</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1080/15592324.2024.2404808" target="_blank" rel="noopener">Novel weapon-aided plant protection in the underground battlefield</a> <span class="year-badge">2024</span></p><p class="authors"><strong>S Jang</strong>, JS Son, AE Schmelz, CM Ryu†</p><p class="venue">Plant Signaling &amp; Behavior, 19(1), 2404808</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.3389/fpls.2024.1411837" target="_blank" rel="noopener">Plant-induced bacterial gene silencing: a novel control method for bacterial wilt disease</a> <span class="year-badge">2024</span></p><p class="authors"><strong>S Jang*</strong>, D Kim*, S Lee, CM Ryu†</p><p class="venue">Frontiers in Plant Science, 5, 1411837</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1073/pnas.2401802121" target="_blank" rel="noopener">Hundreds of antimicrobial peptides create a selective barrier for insect gut symbionts</a> <span class="year-badge">2024</span></p><p class="authors">J Lachat*, G Lextrait*, R Jouan*, A Boukherissa, A Yokota, <strong>S Jang</strong>, K Ishigami, et al., Y Kikuchi†, P Mergaert†</p><p class="venue">PNAS, 121(25), e2401802121</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1073/pnas.2315540121" target="_blank" rel="noopener">Ingested soil bacteria breach gut epithelia and prime systemic immunity in an insect</a> <span class="year-badge">2024</span> <span class="star">★ PNAS highlight</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=92691&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2024/pr20240305/pr20240305.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors"><strong>S Jang†</strong>, K Ishigami, P Mergaert, Y Kikuchi†</p><p class="venue">PNAS, 121(11), e2315540121</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1111/nph.19648" target="_blank" rel="noopener">Is plant acoustic communication fact or fiction?</a> <span class="year-badge">2024</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=92657&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a></p><p class="authors">JS Son*, <strong>S Jang*</strong>, N Mathevon†, CM Ryu†</p><p class="venue">New Phytologist, 242(5), 1876-1880</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.3389/fpls.2023.1279896" target="_blank" rel="noopener">History of a model plant growth-promoting rhizobacterium, <em>Bacillus velezensis</em> GB03: from isolation to commercialization</a> <span class="year-badge">2023</span></p><p class="authors"><strong>S Jang</strong>, SK Choi, H Zhang, S Zhang†, CM Ryu†, J Kloepper†</p><p class="venue">Frontiers in Plant Science, 14, 1279896</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1099/ijsem.0.005913" target="_blank" rel="noopener">Hymenobacter canadensis sp. nov., isolated from freshwater of the pond in Cambridge Bay, Canada</a> <span class="year-badge">2023</span></p><p class="authors">W Kim, <strong>S Jang</strong>, N Chae, M Kim, JY Yeh, S Kim, YM Lee†</p><p class="venue">Int. Journal of Systematic and Evolutionary Microbiology, 73(6), 005913</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.3389/fphys.2022.1071987" target="_blank" rel="noopener">Symbiont coordinates stem cell proliferation, apoptosis, and morphogenesis of gut symbiotic organ in the stinkbug–<em>Caballeronia</em> symbiosis</a> <span class="year-badge">2023</span></p><p class="authors"><strong>S Jang†</strong>, Y Matsuura, K Ishigami, P Mergaert, Y Kikuchi†</p><p class="venue">Frontiers in Physiology, 13, 1071987</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1007/s00248-022-02117-2" target="_blank" rel="noopener">Obligate gut symbiotic association with <em>Caballeronia</em> in the mulberry seed bug <em>Paradieuches dissimilis</em></a> <span class="year-badge">2022</span></p><p class="authors">K Ishigami, <strong>S Jang†</strong>, H Itoh, Y Kikuchi</p><p class="venue">Microbial Ecology, 86, 1307-1318</p></div>
+      <div class="pub"><p class="title"><a href="https://www.microbiologyresearch.org/content/journal/ijsem/10.1099/ijsem.0.005535" target="_blank" rel="noopener">Polymorphobacter megasporae sp. nov., isolated from an Antarctic lichen</a> <span class="year-badge">2022</span></p><p class="authors">HJ Noh, Y Park, J Yang, <strong>S Jang</strong>, H Lee, YM Lee†</p><p class="venue">Int. Journal of Systematic and Evolutionary Microbiology, 72(9), 00553</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1038/s41467-021-26649-2" target="_blank" rel="noopener">Insecticide resistance by a host-symbiont reciprocal detoxification</a> <span class="year-badge">2021</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=72527&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2021/pr20211110/pr20211110.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors">Y Sato*, <strong>S Jang*</strong>, K Takeshita, H Itoh, H Koike, K Tago, M Hayatsu, T Hori, Y Kikuchi†</p><p class="venue">Nature Communications, 12, 6432</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1098/rsbl.2020.0780" target="_blank" rel="noopener">Insecticide resistance governed by gut symbiosis in a rice pest, <em>Cletus punctiger</em>, under laboratory conditions</a> <span class="year-badge">2021</span></p><p class="authors">K Ishigami*, <strong>S Jang*</strong>, H Itoh, Y Kikuchi†</p><p class="venue">Biology Letters, 18, 20200780</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1073/pnas.2020922118" target="_blank" rel="noopener">Dual oxidase enables insect gut symbiosis by mediating respiratory network formation</a> <span class="year-badge">2021</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/researcher.do?mode=treatise-view&id=68259&authorId=31085&pager.offset=0&pagerLimit=10&srAuthorId=31085&beforemode=view#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2021/pr20210302/pr20210302.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors"><strong>S Jang</strong>, P Mergaert†, T Ohbayashi, K Ishigami, S Shigenobu, H Itoh, Y Kikuchi†</p><p class="venue">PNAS, 118(10), e2020922118</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.aspen.2020.09.005" target="_blank" rel="noopener">Re-opening of the symbiont sorting organ with aging in <em>Riptortus pedestris</em></a> <span class="year-badge">2020</span></p><p class="authors"><strong>S Jang†</strong>, Y Kikuchi</p><p class="venue">Journal of Asia-Pacific Entomology, 23, 1089-1095</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.cois.2020.06.004" target="_blank" rel="noopener">Impact of the insect gut microbiota on ecology, evolution, and industry</a> <span class="year-badge">2020</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=90802&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a></p><p class="authors"><strong>S Jang</strong>, Y Kikuchi†</p><p class="venue">Current Opinion in Insect Science, 41, 33-39</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1038/s41396-020-0633-3" target="_blank" rel="noopener"><em>Burkholderia insecticola</em> triggers midgut closure in the bean bug <em>Riptortus pedestris</em> to prevent secondary bacterial infections</a> <span class="year-badge">2020</span> <span class="star">★ F1000</span></p><p class="authors">Y Kikuchi†, T Ohbayashi, <strong>S Jang</strong>, P Mergaert</p><p class="venue">The ISME Journal, 14, 1627-1638</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1128/MRA.00041-20" target="_blank" rel="noopener">Complete genome sequence of <em>Burkholderia</em> sp. strain THE68, a bacterial symbiont isolated from midgut crypts of the seed bug <em>Togo hemipterus</em></a> <span class="year-badge">2020</span></p><p class="authors">K Takeshita, <strong>S Jang</strong>, Y Kikuchi†</p><p class="venue">Microbiology Resource Announcements, 9(10), e00041-20</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1128/IAI.00674-19" target="_blank" rel="noopener">In <em>Staphylococcus aureus</em>, the particulate state of cell envelope is required for the efficient induction of host defense responses</a> <span class="year-badge">2019</span></p><p class="authors">B Kim, TT Jiang, JH Bae, HS Yun, <strong>SH Jang</strong>, et al., BL Lee†</p><p class="venue">Infection and Immunity, 87(12), e00674-19</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1073/pnas.1912397116" target="_blank" rel="noopener">Host-symbiont specificity determined by microbe-microbe competition in an insect gut</a> <span class="year-badge">2019</span> <span class="star">★ F1000</span> <a class="hanbitsa" href="https://www.ibric.org/bric/hanbitsa/treatise.do?mode=treatise-view&id=59864&authorId=31085#!/list" target="_blank" rel="noopener">★ 한빛사</a> <a class="star" href="https://www.aist.go.jp/aist_j/press_release/pr2019/pr20191022/pr20191022.html" target="_blank" rel="noopener">★ AIST Press release</a></p><p class="authors">H Itoh*, <strong>S Jang*</strong>, K Takeshita, T Ohbayashi, N Ohnishi, XY Meng, Y Mitani, Y Kikuchi†</p><p class="venue">PNAS, 116(45), 22673-22682</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.dci.2017.11.014" target="_blank" rel="noopener">Insecticidal activity of the metalloprotease AprA occurs through suppression of host cellular and humoral immunity</a> <span class="year-badge">2017</span></p><p class="authors">SA Lee*, <strong>SH Jang*</strong>, BH Kim, T Shibata, J Yoo, Y Jung, SI Kawabata, BL Lee†</p><p class="venue">Developmental &amp; Comparative Immunology, 81, 116-126</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.dci.2017.09.009" target="_blank" rel="noopener">The roles of antimicrobial peptide, rip-thanatin, in the midgut of <em>Riptortus pedestris</em></a> <span class="year-badge">2017</span></p><p class="authors">KE Park*, <strong>SH Jang*</strong>, J Lee, SA Lee, Y Kikuchi, YS Seo, BL Lee†</p><p class="venue">Developmental &amp; Comparative Immunology, 78, 83-90</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1128/AEM.00459-17" target="_blank" rel="noopener">PhaR, a negative regulator of PhaP, modulates the colonization of a <em>Burkholderia</em> gut symbiont in the midgut of the host insect, <em>Riptortus pedestris</em></a> <span class="year-badge">2017</span> <span class="star">★ AEM spotlight</span></p><p class="authors"><strong>SH Jang</strong>, HA Jang, J Lee, JU Kim, SA Lee, KE Park, BH Kim, YH Jo, BL Lee†</p><p class="venue">Applied and Environmental Microbiology, 83(11), e00459-17</p></div>
+      <div class="pub"><p class="title"><a href="https://doi.org/10.1016/j.dci.2016.11.019" target="_blank" rel="noopener">Gut symbiotic bacteria stimulate insect growth and egg production by modulating hexamerin and vitellogenin gene expression</a> <span class="year-badge">2016</span></p><p class="authors">JB Lee, KE Park, SA Lee, <strong>SH Jang</strong>, HJ Eo, HA Jang, et al., BL Lee†</p><p class="venue">Developmental &amp; Comparative Immunology, 69, 12-22</p></div>
+    </div>
+    <p class="no-results" id="noResults">No matching publications.</p>
+
+    <p style="margin-top:20px;"><a href="https://scholar.google.com/citations?user=4PURJCkAAAAJ&hl=ko&oi=ao" target="_blank" rel="noopener">→ Full list of all 33 publications on Google Scholar</a></p>
+
+    <h3 style="margin-top:30px;">Book Chapter</h3>
+    <div class="pub" style="border-bottom:none;"><p class="title">Chemical Dialogues Between Plants and the Rhizosphere Microbiome <span class="year-badge">2026</span></p><p class="authors">JS Son, <strong>S Jang</strong>, CM Ryu</p><p class="venue">The Microbiome (Vol. 1-6), CRC Press, In Press</p></div>
+  </section>
+
+  <!-- ============ NEWS ============ -->
+  <section id="news">
+    <h2>News</h2>
+    <div class="news-item"><span class="date">2026.06</span><span><span class="role-tag talk-tag">Poster</span>Presented at <strong>ASM Microbe 2026</strong> on gut commensals driving sepsis lethality via early cytokine storms.</span></div>
+    <div class="news-item"><span class="date">2026.05</span><span><span class="role-tag">Co-first author</span> paper in <strong>PNAS</strong>: A Trojan horse pathogen breaking through partner choice barriers in the insect gut.</span></div>
+    <div class="news-item"><span class="date">2026.05</span><span><span class="role-tag">Co-author</span> paper in <strong>Journal of Advanced Research</strong>: Polyethylene and polystyrene oxidation by host and microbial oxidoreductases in <em>Zophobas atratus</em>.</span></div>
+    <div class="news-item"><span class="date">2026.04</span><span><span class="role-tag">Co-first author</span> paper in <strong>Nature Communications</strong>: A Muribaculaceae-enriched microbiota exacerbates TLR4-dependent <em>A. baumannii</em>-induced hyperinflammatory sepsis.</span></div>
+    <div class="news-item"><span class="date">2026</span><span><span class="role-tag">Co-first author</span> paper in <strong>Plant Communications</strong>: Digital twins for plant–microbe interactions: gap finding and filling.</span></div>
+    <div class="news-item"><span class="date">2026</span><span><span class="role-tag">Co-author</span> paper in <strong>Microbiome</strong>: Soil pH as an external filter shaping insect-microbe gut symbiosis.</span></div>
+    <div class="news-item"><span class="date">2026</span><span><span class="role-tag">Co-author</span> paper in <strong>EBioMedicine</strong>: Innate immune priming by n-dodecyl-β-D-maltoside in murine models of bacterial and viral infection.</span></div>
+    <div class="news-item"><span class="date">2025.12</span><span><span class="role-tag award-tag">Award</span>Received the <strong>Outstanding Postdoctoral Researcher Award</strong>, Korea Research Institute of Bioscience and Biotechnology (KRIBB).</span></div>
+    <div class="news-item"><span class="date">2025</span><span><span class="role-tag">Co-author</span> paper in <strong>Plant Stress</strong>: Dual functionality of <em>Peribacillus frigoritolerans</em> in methane mitigation and rice immunity.</span></div>
+    <div class="news-item"><span class="date">2025</span><span><span class="role-tag">First author</span> paper in <strong>Frontiers in Microbiology</strong>: Beyond reductionism — the emerging holistic paradigm in indirect control of pathogen infection.</span></div>
+    <div class="news-item"><span class="date">2025</span><span><span class="role-tag">First author</span> paper in <strong>ISME Communications</strong>: A new role for an old actor — plant small RNAs orchestrate the phytobiome.</span></div>
+    <div class="news-item"><span class="date">2025</span><span><span class="role-tag talk-tag">Poster</span><span class="role-tag award-tag">Award</span>Rhizosphere <em>Burkholderia</em> enriching methanotrophs to reduce methane emissions. <strong>20th International Congress of the ISMPMI</strong> — <em>Travel Award</em>.</span></div>
+    <div class="news-item"><span class="date">2025</span><span><span class="role-tag talk-tag">Poster</span>Presented at the <strong>2025 Annual Meeting of the Microbiological Society of Korea</strong> on a Trojan horse cheater in the insect gut.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag">Co-author</span> paper in <strong>Journal of Hazardous Materials</strong>: Enzymatic oxidation of polyethylene by <em>Galleria mellonella</em> intestinal cytochrome P450s.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag">First author</span> paper in <strong>Plant Signaling &amp; Behavior</strong>: Novel weapon-aided plant protection in the underground battlefield.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag">Co-first author</span> paper in <strong>Frontiers in Plant Science</strong>: Plant-induced bacterial gene silencing — a novel control method for bacterial wilt disease.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag">Co-author</span> paper in <strong>PNAS</strong>: Hundreds of antimicrobial peptides create a selective barrier for insect gut symbionts.</span></div>
+    <div class="news-item"><span class="date">2024.03</span><span><span class="role-tag">First / corresponding author</span> paper in <strong>PNAS</strong>: Ingested soil bacteria breach gut epithelia and prime systemic immunity in an insect — selected as a <strong>highlight</strong> and featured in a commentary.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag">Co-first author</span> paper in <strong>New Phytologist</strong>: Is plant acoustic communication fact or fiction?</span></div>
+    <div class="news-item"><span class="date">2024.05</span><span>Started as a <strong>Sejong Science Fellow</strong> (Principal Investigator) at the Infectious Disease Research Center, KRIBB.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag talk-tag">Invited talk</span><em>Riptortus pedestris</em> as an emerging model system. Seminars at the School of Biological Sciences, <strong>Seoul National University</strong>, Korea.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag talk-tag">Poster</span>Presented at the <strong>27th International Congress of Entomology (ICE 2024)</strong>, Kyoto, Japan, on ingested soil bacteria priming systemic immunity.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag talk-tag">Poster</span>Presented at the <strong>39th Annual Meeting of the ISCE</strong>, Prague, Czechia, on ingested soil bacteria priming systemic immunity.</span></div>
+    <div class="news-item"><span class="date">2024</span><span><span class="role-tag talk-tag">Poster</span>Presented at the <strong>14th Asian Symposium on Microbial Ecology</strong>, Cheongju, Korea, on rhizosphere <em>Burkholderia</em> and methane mitigation.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag">First author</span> paper in <strong>Frontiers in Plant Science</strong>: History of a model plant growth-promoting rhizobacterium, <em>Bacillus velezensis</em> GB03.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag">Co-author</span> paper in <strong>Int. J. of Systematic and Evolutionary Microbiology</strong>: <em>Hymenobacter canadensis</em> sp. nov.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag">First / corresponding author</span> paper in <strong>Frontiers in Physiology</strong>: Symbiont coordinates stem cell proliferation, apoptosis, and morphogenesis of the gut symbiotic organ.</span></div>
+    <div class="news-item"><span class="date">2023.02</span><span>Joined the Infectious Disease Research Center, <strong>KRIBB</strong>, as a Postdoctoral Researcher.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag talk-tag">Invited talk</span>Bean bug — an emerging model system for studying insect–bacteria symbiosis. Infectious Disease Research Center, <strong>KRIBB</strong>, Daejeon, Korea.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag talk-tag">Oral</span><span class="role-tag award-tag">Award</span>Trojan horse in insect–microbe symbiosis. <strong>Annual Meeting of the Korean Society of Applied Entomology</strong>, Pyeongchang, Korea — <em>Oral Presentation Award</em>.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag talk-tag">Poster</span><span class="role-tag award-tag">Award</span>A symbiont-like cheater genocides a pest insect. <strong>The Korean Society of Plant Pathology</strong>, Gyeongju — <em>Poster Presentation Award</em>.</span></div>
+    <div class="news-item"><span class="date">2023</span><span><span class="role-tag talk-tag">Poster</span><strong>Korean Society for Microbiology and Biotechnology</strong> (50th Annual Meeting), Gyeongju — ingested soil bacteria stimulate systemic immunity.</span></div>
+    <div class="news-item"><span class="date">2022</span><span><span class="role-tag">Corresponding author</span> paper in <strong>Microbial Ecology</strong>: Obligate gut symbiotic association with <em>Caballeronia</em> in the mulberry seed bug.</span></div>
+    <div class="news-item"><span class="date">2022</span><span><span class="role-tag">Co-author</span> paper in <strong>Int. J. of Systematic and Evolutionary Microbiology</strong>: <em>Polymorphobacter megasporae</em> sp. nov., from an Antarctic lichen.</span></div>
+    <div class="news-item"><span class="date">2022</span><span><span class="role-tag talk-tag">Invited talk</span><em>Riptortus pedestris</em> — an emerging model system. <strong>Korea Polar Research Institute</strong>, Incheon, Korea.</span></div>
+    <div class="news-item"><span class="date">2022</span><span><span class="role-tag talk-tag">Oral</span>Break the barrier — ingested soil bacteria breach gut epithelia and stimulate immunity. <strong>10th Congress of the International Symbiosis Society</strong>, Lyon, France.</span></div>
+    <div class="news-item"><span class="date">2022</span><span><span class="role-tag talk-tag">Poster</span><strong>10th ISS Congress</strong>, Lyon &amp; <strong>12th Asian Symposium on Microbial Ecology</strong>, Jeju — bacteriobiome of polar lichens.</span></div>
+    <div class="news-item"><span class="date">2021.11</span><span>Joined the Korea Polar Research Institute (<strong>KOPRI</strong>) as a Postdoctoral Researcher.</span></div>
+    <div class="news-item"><span class="date">2021</span><span><span class="role-tag talk-tag">Invited talk</span><em>Riptortus pedestris</em> — an emerging model system. <strong>Korea Society for Parasitology and Tropical Medicine</strong> (online).</span></div>
+    <div class="news-item"><span class="date">2021</span><span><span class="role-tag talk-tag">Poster</span><span class="role-tag award-tag">Award</span>Amazing morphological change of the symbiotic organ (Homeobox gene). <strong>23rd Japanese Society of Evolutionary Studies</strong> — <em>Best Poster Presentation Award</em>.</span></div>
+    <div class="news-item"><span class="date">2021</span><span><span class="role-tag talk-tag">Poster</span><span class="role-tag award-tag">Award</span>Amazing morphological change of the symbiotic organ (Homeobox gene). <strong>65th Japanese Society of Applied Entomology &amp; Zoology</strong> — <em>Poster Presentation Award</em>.</span></div>
+    <div class="news-item"><span class="date">2021</span><span><span class="role-tag">Co-first author</span> paper in <strong>Nature Communications</strong>: Insecticide resistance by a host–symbiont reciprocal detoxification.</span></div>
+    <div class="news-item"><span class="date">2021</span><span><span class="role-tag">Co-first author</span> paper in <strong>Biology Letters</strong>: Insecticide resistance governed by gut symbiosis in a rice pest, <em>Cletus punctiger</em>.</span></div>
+    <div class="news-item"><span class="date">2021.03</span><span><span class="role-tag">First author</span> paper in <strong>PNAS</strong>: Dual oxidase enables insect gut symbiosis by mediating respiratory network formation.</span></div>
+    <div class="news-item"><span class="date">2021.03</span><span>Completed Ph.D. at <strong>Hokkaido University</strong>, Sapporo, Japan.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag talk-tag">Invited talk</span>Bean bug — an emerging model system. School of Medicine, <strong>Kyungpook National University</strong>, Daegu, Korea.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag talk-tag">Poster</span>Duox determines insect gut symbiosis by stabilizing the respiratory network. <strong>64th Annual Meeting of the JSAEZ</strong>, Nagoya, Japan.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag">First / corresponding author</span> paper in <strong>J. of Asia-Pacific Entomology</strong>: Re-opening of the symbiont sorting organ with aging in <em>Riptortus pedestris</em>.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag">First author</span> paper in <strong>Current Opinion in Insect Science</strong>: Impact of the insect gut microbiota on ecology, evolution, and industry.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag">Co-author</span> paper in <strong>The ISME Journal</strong>: <em>Burkholderia insecticola</em> triggers midgut closure in the bean bug — recommended by <strong>F1000</strong>.</span></div>
+    <div class="news-item"><span class="date">2020</span><span><span class="role-tag">Co-author</span> paper in <strong>Microbiology Resource Announcements</strong>: Complete genome sequence of <em>Burkholderia</em> sp. strain THE68.</span></div>
+    <div class="news-item"><span class="date">2019</span><span><span class="role-tag">Co-author</span> paper in <strong>Infection and Immunity</strong>: Particulate state of the cell envelope in <em>Staphylococcus aureus</em> and host defense responses.</span></div>
+    <div class="news-item"><span class="date">2019.11</span><span><span class="role-tag">Co-first author</span> paper in <strong>PNAS</strong>: Host–symbiont specificity determined by microbe–microbe competition — recommended by <strong>F1000</strong>.</span></div>
+    <div class="news-item"><span class="date">2019</span><span><span class="role-tag talk-tag">Invited talk</span>Understanding of insect–bacteria symbioses. Institute of Integrative Biology of the Cell, <strong>CNRS</strong>, Gif-sur-Yvette, France.</span></div>
+    <div class="news-item"><span class="date">2019</span><span><span class="role-tag talk-tag">Oral</span><span class="role-tag award-tag">Award</span>Host–symbiont specificity / DUOX &amp; the respiratory network — at the <strong>Korean Society of Applied Entomology</strong>, the <strong>JSES</strong> (<em>Excellence English Oral Presentation Award</em>), and the <strong>JSAEZ</strong> annual meetings.</span></div>
+    <div class="news-item"><span class="date">2019</span><span><span class="role-tag talk-tag">Poster</span>Gut commensal bacteria contribute to insect healthcare by immune enhancement. <strong>Korean Society of Applied Entomology</strong>, Pyeongchang, Korea.</span></div>
+    <div class="news-item"><span class="date">2019.04</span><span>Awarded a <strong>JSPS Doctoral Research Fellowship</strong> (DC2) at Hokkaido University.</span></div>
+    <div class="news-item"><span class="date">2018</span><span><span class="role-tag talk-tag">Invited talk</span>Dual Oxidase (Duox) as a pivotal symbiosis factor in bean bug–<em>Burkholderia</em> symbiosis. Tropical Biosphere Research Center, <strong>University of the Ryukyus</strong>, Okinawa, Japan.</span></div>
+    <div class="news-item"><span class="date">2018</span><span><span class="role-tag talk-tag">Poster</span>Duox is pivotal to maintain the bean bug–<em>Burkholderia</em> gut symbiosis. <strong>46th Naito Conference</strong>, Sapporo, Japan.</span></div>
+    <div class="news-item"><span class="date">2018.04</span><span>Began Ph.D. studies at the Graduate School of Agriculture, <strong>Hokkaido University</strong>, Japan.</span></div>
+    <div class="news-item"><span class="date">2018</span><span><span class="role-tag award-tag">Award</span><strong>Best Thesis Award</strong>, Pusan National University.</span></div>
+    <div class="news-item"><span class="date">2018.02</span><span>Completed M.S. at <strong>Pusan National University</strong>, Busan, Korea.</span></div>
+    <div class="news-item"><span class="date">2017</span><span><span class="role-tag">Co-first author</span> paper in <strong>Developmental &amp; Comparative Immunology</strong>: Insecticidal activity of the metalloprotease AprA via suppression of host immunity.</span></div>
+    <div class="news-item"><span class="date">2017</span><span><span class="role-tag">Co-first author</span> paper in <strong>Developmental &amp; Comparative Immunology</strong>: The roles of antimicrobial peptide rip-thanatin in the midgut of <em>Riptortus pedestris</em>.</span></div>
+    <div class="news-item"><span class="date">2017</span><span><span class="role-tag talk-tag">Oral</span><span class="role-tag award-tag">Award</span>PhaR modulates colonization of <em>Burkholderia</em> gut symbiont; and AprA-mediated killing of the host insect. <strong>Korean Society of Applied Entomology</strong> (<em>Best Oral Presentation Award</em>) &amp; <strong>PNU-AIST GRL Annual Meeting</strong>.</span></div>
+    <div class="news-item"><span class="date">2017</span><span><span class="role-tag talk-tag">Poster</span>PhaR regulates colonization of <em>Burkholderia</em> gut symbiont. <strong>Gordon Conference: Animal–Microbe Symbioses</strong>, Vermont, USA.</span></div>
+    <div class="news-item"><span class="date">2017.05</span><span><span class="role-tag">First author</span> paper in <strong>Applied and Environmental Microbiology</strong>: PhaR modulates colonization of a <em>Burkholderia</em> gut symbiont — selected as an <strong>AEM spotlight</strong> paper.</span></div>
+    <div class="news-item"><span class="date">2016</span><span><span class="role-tag">Co-author</span> paper in <strong>Developmental &amp; Comparative Immunology</strong>: Gut symbiotic bacteria stimulate insect growth and egg production.</span></div>
+    <div class="news-item"><span class="date">2016</span><span><span class="role-tag talk-tag">Poster</span>PhaR affects colonization of <em>Burkholderia</em> gut symbiont. <strong>2nd Asian Invertebrate Immunity Symposium</strong>, Hangzhou, China.</span></div>
+    <div class="news-item"><span class="date">2016.03</span><span>Began M.S. studies in Manufacturing Pharmacy at <strong>Pusan National University</strong>, Korea.</span></div>
+    <div class="news-item"><span class="date">2016</span><span><span class="role-tag award-tag">Award</span><strong>Academic Excellence Award</strong>, Hanyang University.</span></div>
+    <div class="news-item"><span class="date">2016.02</span><span>Graduated with a B.S. from <strong>Hanyang University ERICA</strong>, Ansan, Korea.</span></div>
+  </section>
+
+</main>
+
+<!-- Lightbox modal for News photos -->
+<div id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="box">
+    <button class="close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <img id="lb-img" src="" alt="" onerror="this.style.display='none'" onload="this.style.display='block'">
+    <div class="caption">
+      <div class="lb-date" id="lb-date"></div>
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-body" id="lb-body"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © <span id="year"></span> Seonghan Jang · Infectious Disease Research Center, Korea Research Institute of Bioscience and Biotechnology (KRIBB)
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const sections = document.querySelectorAll('main section');
+  const navLinks = document.querySelectorAll('nav ul a');
+
+  function showSection(id) {
+    sections.forEach(sec => sec.classList.toggle('active-section', sec.id === id));
+    navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+    window.scrollTo(0, 0);
+  }
+
+  // tab clicks
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').slice(1);
+      showSection(id);
+      history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  // brand click → home
+  document.querySelector('nav .brand').addEventListener('click', () => showSection('home'));
+
+  // open the right section if the page is loaded with a #hash
+  const initial = location.hash ? location.hash.slice(1) : 'home';
+  if (document.getElementById(initial)) showSection(initial); else showSection('home');
+
+  function filterPubs() {
+    const q = document.getElementById('pubSearch').value.toLowerCase();
+    const pubs = document.querySelectorAll('#pubList .pub');
+    let visible = 0;
+    pubs.forEach(pub => {
+      const match = pub.textContent.toLowerCase().includes(q);
+      pub.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('noResults').style.display = visible ? 'none' : 'block';
+  }
+
+  // lightbox for News photos
+  function openLightbox(img, title, body, date) {
+    document.getElementById('lb-img').src = img;
+    document.getElementById('lb-img').alt = title || '';
+    document.getElementById('lb-date').textContent = date || '';
+    document.getElementById('lb-title').textContent = title || '';
+    document.getElementById('lb-body').textContent = body || '';
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>
