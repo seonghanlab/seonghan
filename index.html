@@ -538,8 +538,9 @@
   document.querySelector('nav .brand').addEventListener('click', () => showSection('home'));
 
   // open the right section if the page is loaded with a #hash
-  const initial = location.hash ? location.hash.slice(1) : 'home';
-  if (document.getElementById(initial)) showSection(initial); else showSection('home');
+  // always start on Home when the site is opened
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  showSection('home');
 
   function filterPubs() {
     const q = document.getElementById('pubSearch').value.toLowerCase();
